@@ -1,0 +1,84 @@
+
+<div class="container">
+  <br>
+  <h2 style=" font-family:Comic Sans MS;">List of Users</h2>
+
+  <div class="row" style="padding-top: 20px;">
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-4">
+      <div class="loader" *ngIf="loading"></div>
+    </div>
+    <div class="col-sm-4"></div>
+  </div>
+
+<div class="table-responsive tableBorder">
+  <table  class="table table-stripped" *ngIf="!loading" >
+    <thead style=" font-size:16px;">
+      <tr *ngIf="users && users.length > 0" >  
+        <th>
+         #
+        </th>
+        <th>
+          Full Name
+        </th>
+        <th>
+          Username
+        </th>
+        <th>
+          Role
+        </th>
+        <th>
+          Subjects Assigned 
+        </th>
+        <th>
+          Edit
+        </th>
+        <th style="text-align:center">
+          Account Status
+        </th>        
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users; let sn = index">
+       
+        <td>
+          {{ (sn+1) }}
+        </td>
+        <td>
+            {{  user.name }}
+        </td>
+        <td>
+            {{ user.username }}
+        </td>  
+        <td class="capitalizeFirstLt">
+            {{ user.role }}
+        </td> 
+        <td> 
+            <ul>
+              <li *ngFor="let sub of  user.subjects" style="list-style:none; ">
+                  <b style='font-style:italic; '> {{ (sub.subjectCode) }}</b> {{sub.subjectTitle}}
+                  </li>              
+            </ul>
+        </td>
+        <td>
+          <button  class="btn" (click)=editUser(user.key) >  <i class='fa fa-edit fa-lg' style='color:blue;'></i> </button>
+       </td>
+       <td style="text-align:center" >
+        <span *ngIf="user.status === 'enabled'; else disabled">
+         <i class="fa fa-unlock fa-lg" style="color:rgb(7, 162, 7);"></i>  
+        </span>
+        <!-- <span *ngIf="user.status !== 'enabled'" >
+           <i class="fa fa-times fa-lg" style="color:red;"></i> 
+        </span> -->
+        <ng-template #disabled>
+         <i class="fa fa-lock  fa-lg" style="color:red;"></i> 
+       </ng-template>
+     </td>
+
+       </tr>
+    </tbody>
+  </table>
+
+</div>
+</div>

@@ -1,0 +1,270 @@
+<div class="container">
+  <!-- <h2 style="padding-left:250px; padding-bottom:30px; font-family:Comic Sans MS">Add New User</h2> -->
+  <h2 style="padding-left:0px; padding-bottom:30px; font-family:Comic Sans MS">Edit User Details
+      <span class="btn btn-info pull-right" id="back" (click)=goBack() ><i class="fa fa-arrow-left" ></i>&nbsp;Back</span>
+  </h2>
+  <div class='row'>
+    <div class='alert alert-danger'>
+      <strong>Note!</strong> Please note subjects displayed in red color have been already allotted to other users, thus are not available
+      for allottment.
+    </div>
+  </div>
+  <form [formGroup]="userForm" (ngSubmit)="editUser()">
+
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label class="required">Account Status</label>
+      </div>
+      <div class="col-sm-10">
+        <span class="">
+          <input type="radio" formControlName="status" value="enabled" [ngModel]='ngCurrentStatus'> Enabled
+        </span> &nbsp;
+        <span class="">
+          <input type="radio" formControlName="status" value="disabled" [ngModel]='ngCurrentStatus' >Disabled
+        </span>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label class="required">Full Name</label>
+      </div>
+      <div class="col-sm-8">
+        <input type="text" id="name" class="form-control" formControlName="name" [ngModel]='ngCurrentName'>
+        <div *ngIf="!!name.touched && !!name.errors">
+          <div class="alert alert-danger" *ngIf="!!name.errors.required">
+            Full Name is required
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label class="required">Username</label>
+      </div>
+      <div class="col-sm-8">
+        <input #un type="text" id="username" class="form-control" formControlName="username" minlength="4" (blur)="onBlur(un.value)" [ngModel]='ngCurrentUserName'> 
+        <div *ngIf="!!username.touched && !!username.errors">
+          <div class="alert alert-danger" *ngIf="!!username.errors.required">
+            Username is required
+          </div>
+        </div>
+
+        <div *ngIf="username.errors && username.touched">
+          <div class="alert alert-danger" *ngIf="!username.errors.required && !!username.errors.minlength">
+            Username too short
+          </div>
+        </div>
+
+        <div *ngIf="invalidUsername">
+          <div class="alert alert-danger">
+            Username not avilable
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label class="required">Password</label>
+      </div>
+      <div class="col-sm-8">
+        <input type="text" id="password" class="form-control" formControlName="password" [ngModel]='ngCurrentPassword'>
+        <div *ngIf="!!password.touched && !!password.errors">
+          <div class="alert alert-danger" *ngIf="!!password.errors.required">
+            Password is required
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-sm-2">
+        <label class="required">Role</label>
+      </div>
+      <div class="col col-sm-8 form-group">
+        <select id="role" class="form-control" formControlName="role" (change)="onRoleChange($event.target.value)" [ngModel]='ngCurrentRole'>
+          <option *ngFor="let role of roles; let i=index;" value={{role.val}}>
+            {{role.label}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+
+    <form [formGroup]="subjectsForm">
+      <div class="row form-group">
+        <div class="col-sm-2">
+          <label class="required">Assign Subjects</label>
+        </div>
+        <div class="col-sm-8 form-group" style="padding:0px;">
+          <!-- semester1 subjects semester 2 subjects -->
+          <div class="col-sm-6">
+            <fieldset class="subjects">
+              <legend class="subjects">Semester1</legend>
+              <div class="row">
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                  <div class="loader" *ngIf="loader1"></div>
+                </div>
+              </div>
+
+              <div *ngFor="let data of allSem1Subjects; let i = index; let even = even; let odd = odd; let first = first; let last = last;">
+                <input  type="checkbox" *ngIf='data.allotted == false || data.mySubject == true' [checked]='data.mySubject' [disabled]="ngCurrentRole == 'admin'" style="display:inline-block !important;" class="cb-subjects" (change)="onSubjectsChange(data.key, $event.target.checked, 'semester1')">     
+                <span *ngIf='data.allotted == true && data.mySubject == false'>&nbsp; &nbsp; </span>                
+                <span [ngClass]="{'text-danger':data.allotted && data.mySubject == false }">{{data.subjectTitle}} </span>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="col-sm-6">
+
+            <fieldset class="subjects">
+              <legend class="subjects">Semester2</legend>
+              <div class="row">
+                <div class="col-sm-4">
+                </div>
+
+                <div class="col-sm-4">
+                  <div class="loader" *ngIf="loader2"></div>
+                </div>
+              </div>
+
+              <div *ngFor="let data of allSem2Subjects;">
+                <input  type="checkbox"  *ngIf='data.allotted == false || data.mySubject == true' [checked]='data.mySubject' [disabled]="ngCurrentRole == 'admin'" style="display:inline-block !important;" class="cb-subjects" (change)="onSubjectsChange(data.key, $event.target.checked, 'semester2')">
+                <span *ngIf='data.allotted == true && data.mySubject == false'>&nbsp; &nbsp; </span>                
+                <span [ngClass]="{'text-danger':data.allotted && data.mySubject == false }">{{data.subjectTitle}} </span>
+              </div>
+            </fieldset>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- semester3 subjects semester 4 subjects -->
+      <div class="row form-group">
+        <div class="col-sm-2" style="padding:0px;">
+
+        </div>
+        <div class="col-sm-8 form-group" style="padding:0px;">
+          <div class="col-sm-6">
+
+            <fieldset class="subjects">
+              <legend class="subjects">Semester3</legend>
+              <div class="row">
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                  <div class="loader" *ngIf="loader3"></div>
+                </div>
+              </div>
+
+              <div *ngFor="let data of allSem3Subjects;">
+                <input   type="checkbox"  *ngIf='data.allotted == false || data.mySubject == true' [checked]='data.mySubject' [disabled]="ngCurrentRole == 'admin'" style="display:inline-block !important;" class="cb-subjects" (change)="onSubjectsChange(data.key, $event.target.checked, 'semester3')">
+                <span *ngIf='data.allotted == true && data.mySubject == false'>&nbsp; &nbsp; </span>                
+                <span [ngClass]="{'text-danger':data.allotted && data.mySubject == false }">{{data.subjectTitle}} </span>
+              </div>
+            </fieldset>
+
+          </div>
+
+          <div class="col-sm-6">
+
+            <fieldset class="subjects">
+              <legend class="subjects">Semester4</legend>
+              <div class="row">
+                <div class="col-sm-4">
+                </div>
+
+                <div class="col-sm-4">
+                  <div class="loader" *ngIf="loader4"></div>
+                </div>
+              </div>
+
+              <div *ngFor="let data of allSem4Subjects;">
+                <input  type="checkbox"  *ngIf='data.allotted == false || data.mySubject == true' [checked]='data.mySubject' [disabled]="ngCurrentRole == 'admin'" style="display:inline-block !important;" class="cb-subjects" (change)="onSubjectsChange(data.key, $event.target.checked, 'semester4')">
+                <span *ngIf='data.allotted == true && data.mySubject == false'>&nbsp; &nbsp; </span>                
+                <span [ngClass]="{'text-danger':data.allotted && data.mySubject == false }">{{data.subjectTitle}} </span>
+              </div>
+            </fieldset>
+
+          </div>
+        </div>
+      </div>
+      <!-- semester5 subjects semester6 subjects -->
+      <div class="row form-group">
+        <div class="col-sm-2" style="padding:0px;">
+
+        </div>
+        <div class="col-sm-8 form-group" style="padding:0px;">
+          <div class="col-sm-6">
+
+            <fieldset class="subjects">
+              <legend class="subjects">Semester5</legend>
+              <div class="row">
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                  <div class="loader" *ngIf="loader5"></div>
+                </div>
+              </div>
+
+              <div *ngFor="let data of allSem5Subjects;">
+                <input  type="checkbox"  *ngIf='data.allotted == false || data.mySubject == true' [checked]='data.mySubject' [disabled]="ngCurrentRole == 'admin'" style="display:inline-block !important;" class="cb-subjects" (change)="onSubjectsChange(data.key, $event.target.checked,'semester5')">
+                <span *ngIf='data.allotted == true && data.mySubject == false'>&nbsp; &nbsp; </span>                
+                <span [ngClass]="{'text-danger':data.allotted && data.mySubject == false }">{{data.subjectTitle}} </span>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="col-sm-6">
+
+            <fieldset class="subjects">
+              <legend class="subjects">Semester6</legend>
+              <div class="row">
+                <div class="col-sm-4">
+                </div>
+
+                <div class="col-sm-4">
+                  <div class="loader" *ngIf="loader6"></div>
+                </div>
+              </div>
+
+              <div *ngFor="let data of allSem6Subjects;">
+                <input  type="checkbox"  *ngIf='data.allotted == false || data.mySubject == true' [checked]='data.mySubject' [disabled]="ngCurrentRole == 'admin'"  style="display:inline-block !important;" class="cb-subjects" (change)="onSubjectsChange(data.key, $event.target.checked,'semester6')">
+                <span *ngIf='data.allotted == true && data.mySubject == false'>&nbsp; &nbsp; </span>                
+                <span [ngClass]="{'text-danger':data.allotted && data.mySubject == false }">{{data.subjectTitle}} </span>
+              </div>
+            </fieldset>
+
+          </div>
+        </div>
+      </div>
+
+
+    </form>
+
+
+    <div class="col-sm-10 form-group" style="text-align:right; padding-right:0px;">
+      <!-- userForm.valid && noSubjectsAssigned -->
+      <button class="btn btn-danger" (click)=goBack()>
+        <i class="fa fa-close"></i>&nbsp; Cancel</button>
+      <!-- <button class="btn btn-primary" id="cancel" (click)="reset()"><i class="fa fa-recycle" ></i>&nbsp;Reset</button> -->
+      <button class="btn btn-success" type="submit" id="edituser" [disabled]="!userForm.valid">
+        <i class="fa fa-save"></i>&nbsp; Upadate User</button>
+    </div>
+  </form>
+
+</div>
+
+
+
+
+<!-- <div class="container">
+    <pre>Form values: {{subjectsForm.value | json}}</pre>
+</div> -->

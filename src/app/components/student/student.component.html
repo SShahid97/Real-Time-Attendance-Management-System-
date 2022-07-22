@@ -1,0 +1,196 @@
+<div class="wrapper">
+
+  <nav id="sidebar">
+
+    <div style="text-align:right; margin-right:3px; margin-top:5px; background:transparent;">
+      <span id="sidebarCollapse">
+        <i class="glyphicon glyphicon-circle-arrow-left" style="display: block; font-size: 2em;"></i>
+      </span>
+    </div>
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+      <h3>User Name</h3>
+    </div>
+
+    <!-- Sidebar Links -->
+    <ul class="list-unstyled components">
+      <li class="active">
+        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="true">
+          <i class="glyphicon glyphicon-home"></i>
+          Attendance
+        </a>
+        <ul class="collapse list-unstyled in" id="homeSubmenu">
+          <li>
+            <a href="#">
+              <i class="fa fa-file"></i> &nbsp; Take</a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-list-alt"></i> &nbsp; View</a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-edit"></i> &nbsp; Edit/Delete</a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="">
+        <a href="#stdSubmenu" data-toggle="collapse" aria-expanded="false">
+          <!-- <i class="glyphicon glyphicon-home"></i> -->
+          <i class="fa fa-user"></i>
+          Student
+        </a>
+        <ul class="collapse list-unstyled" id="stdSubmenu">
+          <li class="">
+            <a href="#">
+              <i class="fa fa-list-alt"></i> &nbsp; View</a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-plus-circle"></i> &nbsp; Add</a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-edit"></i> &nbsp; Edit/Delete</a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="">
+          <a href="#teacherSubmenu" data-toggle="collapse" aria-expanded="false">
+            <!-- <i class="glyphicon glyphicon-home"></i> -->
+            <i class="fa fa-user"></i>
+            Teacher
+          </a>
+          <ul class="collapse list-unstyled" id="teacherSubmenu">
+            <li class="">
+              <a href="#">
+                <i class="fa fa-list-alt"></i> &nbsp; View</a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fa fa-plus-circle"></i> &nbsp; Add</a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fa fa-edit"></i> &nbsp; Edit/Delete</a>
+            </li>
+          </ul>
+        </li>
+
+
+      <li class="">
+        <a href="#subjectSubmenu" data-toggle="collapse" aria-expanded="false">
+          <!-- <i class="glyphicon glyphicon-home"></i> -->
+          <i class="fa fa-book"></i>
+          Subject
+        </a>
+        <ul class="collapse list-unstyled" id="subjectSubmenu">
+          <li class="">
+            <a href="#">
+              <i class="fa fa-list-alt"></i> &nbsp; View</a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-plus-circle"></i> &nbsp; Add</a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-edit"></i> &nbsp; Edit/Delete</a>
+          </li>
+        </ul>
+      </li>
+      
+      
+      <li id="changeSemester">
+        <a href="#">
+          <i class="glyphicon glyphicon-book"></i> Change Semester</a>
+      </li>
+
+      <li>
+        <a href="#">
+          <i class="glyphicon glyphicon-link"></i>
+          Logout
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <!-- We'll fill this with dummy content -->
+
+
+    <p>
+      student works!
+      <!-- <button (click)="insert()">Insert Data</button> -->
+      <!-- <button (click)="get()">Get Data</button>
+
+      {{stdsList | json}}
+
+      <br>
+      <button id="up" (click)="update()">Update Data</button>
+      <button (click)="delete()">Delete Data</button>
+
+      <button (click)="deleteAll()">Delete All Data</button> -->
+    </p>
+
+
+
+    <button type="button" id="popupBtn" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#flipFlop" style="display: none">
+      Click Me
+    </button>
+
+    <!-- The modal -->
+    <div class="modal fade" id="flipFlop" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-backdrop="false"
+      style="background:rgba(255,255,255,0.4);">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="text-align:center; color:black;">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button> -->
+            <!-- <h4 class="modal-title" id="modalLabel">Select Semester and Subject</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col col-sm-2 dialoglbl">
+                Semester
+              </div>
+              <div class="col col-sm-9 form-group">
+                <select id="semester" [(ngModel)]="currentSemester" (change)="onSemesterChange($event.target.value)" class="form-control">
+                  <option *ngFor="let semester of semesters" value={{semester.val}}>
+                    {{semester.label}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px;">
+              <div class="col col-sm-2 dialoglbl">
+                Subject
+              </div>
+              <div class="col col-sm-9 form-group">
+                <select id="subject" class="form-control" [(ngModel)]="currentSubject" (change)="onSubjectChange($event.target.value)">
+                  <option *ngFor="let subject of subjects; let i = index" value={{subject}} [selected]="i==0">
+                    {{subject}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="confirm-btn" class="btn btn-primary form-control" data-dismiss="modal" (click)="getStudents()"
+              [disabled]="! currentSemester">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+
+  </div> 
+  <!-- container ends here -->
+
+</div>
+<!-- wrapper ends here -->

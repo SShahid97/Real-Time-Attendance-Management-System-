@@ -1,0 +1,53 @@
+
+
+   <button type="button"  id="popupBtn" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#flipFlop" style="display:none;"> </button>
+    <!-- The modal--> 
+    <div class="modal fade" id="flipFlop" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-backdrop="false"
+    >
+    <div class="modal-dialog" role="document">
+          <div class="login-page">
+          <div class="form">
+              <form class="login-form"  [formGroup]="loginForm" (ngSubmit)="loginFunction()">
+                  
+                  <div style="text-align:left; font-size:16px;">
+                      <label class="required">Username</label> 
+                    </div>
+                  <input type="text"  formControlName="username" placeholder="username" />
+                  <div *ngIf="username.touched && username.errors">
+                      <div class="alert alert-danger"  style="padding:2px;" *ngIf="!!username.errors.required">
+                        Username is required
+                      </div>
+                    </div>
+                  
+                    <div style="text-align:left; font-size:16px;"> 
+                    <label class="required" >Password</label> 
+                  </div>
+                    <input type="password"   formControlName="password" placeholder="password" />
+                  <div *ngIf="password.touched && password.errors" >
+                      <div class="alert alert-danger" style="padding:2px;" *ngIf="!!password.errors.required">
+                        password is required
+                      </div>
+                    </div>
+                    <div *ngIf="invalidUser">
+                      <div class="alert alert-danger" style="padding:2px;">
+                        Invalid username or password!
+                      </div>
+                    </div>
+                    <div *ngIf="disabledUser">
+                      <div class="alert alert-danger" style="padding:2px;">
+                        Your account is disabled!
+                      </div>
+                    </div>                    
+                    
+                  <button class="btn btn-primary " type="submit" [disabled]="!loginForm.valid">Login</button>
+              </form>
+          </div>
+          </div>
+
+        <!-- <div class="modal-footer">
+          <button type="button" id="confirm-btn" class="btn btn-primary form-control" data-dismiss="modal" (click)="getStudents()"
+            [disabled]="! currentSemester">Confirm</button> 
+        </div> -->
+         </div>
+  </div> 
+      

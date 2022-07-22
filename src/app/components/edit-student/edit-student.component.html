@@ -1,0 +1,149 @@
+
+<div class="container">
+  <h2 style="padding-left:0px; padding-bottom:30px; font-family:Comic Sans MS"  >Edit Student Details
+       <span class="btn btn-info pull-right" id="back" (click)='goBack()'><i class="fa fa-arrow-left" ></i>&nbsp;Back</span>
+  </h2>
+  
+  <form [formGroup]="accountForm" (ngSubmit)="editStudent()">
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label class="required">Name:</label>
+      </div>
+      <div class="col-sm-8">
+        <input type="text" id="name" class="form-control" formControlName="name" [ngModel]='currentStudentName'>
+        <div *ngIf="name.touched && name.errors">
+          <div class="alert alert-danger" *ngIf="!!name.errors.required">
+            Name is required
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label class="required">Roll Number:</label>
+      </div>
+      <div class="col-sm-8">
+        <input type="number" id="rollNo" class="form-control" formControlName="rollNo" min="0" [ngModel]='currentStudentRollNo'>
+        <div *ngIf="rollNo.touched && rollNo.errors">
+          <div class="alert alert-danger" *ngIf="!!rollNo.errors.required">
+            Roll number is required
+          </div>
+        </div>
+        <div *ngIf="rollNo.errors && rollNo.touched">
+          <div class="alert alert-danger" *ngIf="!rollNo.errors.required && !!rollNo.errors.inValidRollNo">
+            Roll number cannot be 0 or negative
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label class="required">Email:</label>
+      </div>
+      <div class="col-sm-8">
+        <input type="text" id="email" class="form-control" formControlName="email" [ngModel]='currentStudentEmail'>
+        <div *ngIf="email.touched && email.errors">
+          <div class="alert alert-danger" *ngIf="!!email.errors.required">
+            The email is required
+          </div>
+        </div>
+        <div *ngIf="email.errors">
+          <div class="alert alert-danger" *ngIf="!!email.errors.pattern">
+            The email is not valid
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label class="required">Address:</label>
+      </div>
+      <div class="col-sm-8">
+        <input type="text" id="address" class="form-control" formControlName="address" min="0"  [ngModel]='currentStudentAddress' >
+        <div *ngIf="address.touched && address.errors">
+          <div class="alert alert-danger" *ngIf="!!address.errors.required">
+            Address is required
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col col-sm-2">
+          <label class="required">Semester:</label>
+        </div>
+        <div class="col col-sm-8 form-group">
+          <select id="semester" class="form-control" formControlName="semester" [ngModel]='currentStudentSemester'>
+            <option *ngFor="let semester of semesters" value={{semester.val}} >
+              {{semester.label}}
+            </option>
+          </select>
+          <div *ngIf="!!semester.touched && !!semester.errors">
+            <div class="alert alert-danger" *ngIf="!!semester.errors.required">
+              Semseter is required
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label class="required">Gender:</label>
+      </div>
+      <div class="col-sm-8">
+        <span class="">
+          <input type="radio" formControlName="gender" value="male" [ngModel]='currentStudentGender'> Male
+        </span> &nbsp;
+        <span class="">
+          <input type="radio" formControlName="gender" value="female" [ngModel]='currentStudentGender' >Female
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-8">
+          <div *ngIf="gender.touched && gender.errors">
+            <div class="alert alert-danger" *ngIf="!!gender.errors.required">
+              Gender is required
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label class="required">Contact:</label>
+      </div>
+      <div class="col-sm-8">
+        <input type="text" id="contact" class="form-control" formControlName="contact" min="0" maxlength="10" minlength="10" [ngModel]='currentStudentContact' >
+        <div *ngIf="contact.touched && contact.errors">
+          <div class="alert alert-danger" *ngIf="!!contact.errors.required">
+            Contact is required
+          </div>
+        </div>
+        <div *ngIf="contact.errors && contact.touched">
+          <div class="alert alert-danger" *ngIf="!contact.errors.required && !!contact.errors.invalidPhoneNo">
+            Contact number must be 10-digit long. 
+          </div>
+        </div>
+      </div>
+    </div>
+
+   <div class="col-sm-10 form-group" style="text-align:right; padding:0px;">
+      <button class="btn btn-danger" (click)=goBack()><i class="fa fa-close" ></i>&nbsp;Cancel</button>
+      <!-- <button class="btn btn-primary" id="cancel" (click)="reset()"><i class="fa fa-recycle" ></i>&nbsp;Reset</button> -->
+      <button class="btn btn-success" type="submit" [disabled]="!accountForm.valid"><i class="fa fa-save" ></i>&nbsp;Update Student</button>
+    </div>
+
+  </form>
+
+</div>

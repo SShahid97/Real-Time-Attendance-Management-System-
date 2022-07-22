@@ -1,0 +1,131 @@
+<div class="container" >
+    <br>
+    <div class='alert alert-success'>
+        <strong>View attendance of any choosen subject on any specific date.</strong>
+        <p>Use below selectors to choose a subject and a date for which you want to view attendance.</p>
+    </div>
+    <form [formGroup]="attendanceForm" (ngSubmit)="viewAttendance()">
+        <div class="row">
+            <div class="col-sm-4" style="margin-top:5px;">
+                <select class="form-control" (change)="onSubjectChange($event.target.value)" formControlName="subjectChoosen">
+                    <option value="">Select Subject</option>
+                    <option *ngFor="let subject of currentUser.subjects" value={{subject.key}}>
+                        {{subject.subjectTitle}} ({{subject.semester | capitalizeFirst}})
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-sm-3" style="margin-top:5px;">
+                <input  type='date' class="form-control" [min]="minDate" [max]="maxDate" style='color:darkgreen;'
+                    formControlName="dateChoosen" onkeydown="return false">
+            </div>
+            <div class="col-sm-3 pull-right" style="margin-top:5px;">
+                <button class="btn btn-success" type="submit" [disabled]='!attendanceForm.valid'>View Attendance</button>
+            </div>
+        </div>
+
+        <div class="row" style='padding-top:0px; margin-top:0px;'>
+            <div *ngIf="!!subjectChoosen.touched && !!subjectChoosen.errors" style='padding-top:0px; margin-top:0px;'>
+                <div class='col-sm-4' style='padding-top:0px; margin-top:0px;'>
+                    <small style='color:red;'>
+                        Select a Subject
+                    </small>
+                </div>
+            </div>
+            <div *ngIf="!!dateChoosen.touched && !!dateChoosen.errors" style='padding-top:0px; margin-top:0px;'>
+                <div class='col-sm-3' style='padding-top:0px; margin-top:0px; padding-left:0px; margin-left:0px;' *ngIf="!!dateChoosen.errors.required">
+                    <small style='color:red;'>
+                        Select a Date
+                    </small>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <div class="row" style="padding-top: 20px;">
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-4">
+            <div class="loader" *ngIf="loading"></div>
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+
+    <div class='row headings' *ngIf="!loading" style="margin:0px; margin-bottom:5px;" >
+        <h4 *ngIf="students && students.length > 0">
+            <div class="col-sm-5" style="padding-left:0px;">
+                    <span style='font-style:italic;'>  Subject:</span> <strong id="subjectlabel">{{headingLabelSubject}} </strong>
+            </div>
+        <div class="col-sm-4" style="padding-left:0px;">
+               <span style='font-style:italic;'>Semester:</span> <strong>{{headingLabelSemester}}</strong>
+        </div>
+            <div class="col-sm-3" style="padding-left:0px;">    
+                    <span style='font-style:italic;'> Date:</span> <strong> {{headingLabelDate}}</strong>
+            </div>
+            
+        </h4>
+    </div>
+
+    <div class='row' *ngIf="!loading" style='text-align:center;'>
+        <div *ngIf="(!students || students.length == 0) && !firstTime"  class='alert alert-danger'>
+            No records available for <strong>{{headingLabelSubject}}</strong> on <strong>{{headingLabelDate}}</strong>
+        </div>
+    </div>
+
+    <div class="table-responsive tableBorder">
+        <table class="table table-stripped" id="stdtable" *ngIf="!loading">
+            <thead style=" font-size:16px;">
+                <tr *ngIf="students && students.length > 0">
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Roll Number
+                    </th>
+                    <th>
+                        Attendance 
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let student of students; let i = index">
+
+                    <td>
+                        {{ (i+1) }}
+                    </td>
+                    <td>
+                        {{student.name}}
+                        <input type="hidden" value="{{student.name}}">
+                    </td>
+
+                    <td>
+                        {{student.rollNo}}
+                        <input type="hidden" value="{{student.rollNo}}">
+                    </td>
+                    <td style='font-weight:bold;'>
+                        <span *ngIf="attendanceArray[i].present == true" style='color:green;'>Present</span>
+                        <span *ngIf="attendanceArray[i].present == false" style='color:red'>Absent</span>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- <button class="btn btn-success" [disabled]='disableSave' (click)=saveAttendance()>Save</button>
+          <p class='alert alert-success' *ngIf="disableSave">Attendance already taken</p> -->
+</div>
+
+
+<!-- 
+        <div class="col-sm-4" style="padding:0px;margin:0px;">
+            <mat-form-field class="example-full-width" style="padding:0px;margin:0px;">
+                <input matInput [min]="minDate" [max]="maxDate" type='date' [matDatepicker]="picker" placeholder="DD/MM/YYYY" style='color:darkgreen;' formControlName="dateChoosen" >
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+            </mat-form-field>
+        </div> -->

@@ -1,0 +1,8 @@
+.capitalizeFirstLt::first-letter{
+    text-transform: capitalize;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    }

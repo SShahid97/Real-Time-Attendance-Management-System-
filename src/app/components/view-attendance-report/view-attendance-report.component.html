@@ -1,0 +1,37 @@
+<!-- sn name rollno total attendance  present absent pcertage  -->
+<div class="container">
+  <div style="text-align:center">
+    <h3> View attendance report</h3>
+  </div>
+  <form [formGroup]="reportForm" (ngSubmit)="viewAttendanceReport()">
+
+      <div class="col-sm-3 form-group" style="margin-top:25px;">
+         <select class="form-control" (change)="onSubjectChange($event.target.value)" formControlName="subjectChoosen">
+              <option value="">Select Subject</option>
+              <option *ngFor="let subject of currentUser.subjects" value={{subject.key}}>
+                  {{subject.subjectTitle}} ({{subject.semester | capitalizeFirst}})
+              </option>
+          </select>
+      </div>
+
+    
+     <div class="col-sm-3 form-group">
+        <label class="required">From Date:</label>
+      <br>
+        <input type='date' class="form-control" [min]="minDate" [max]="maxDate" style='color:darkgreen;' onkeydown="return false"
+          formControlName="fromDate">
+      </div>
+    
+    
+      
+      <div class="col-sm-3 form-group">
+          <label class="required">To Date:</label>
+        <br>
+        <input type='date' class="form-control" [min]="minDate" [max]="maxDate" style='color:darkgreen;' onkeydown="return false"
+          formControlName="toDate">
+      </div>
+    <div class="col-sm-3 form-group" style="margin-top:25px;" >
+        <button class="btn btn-success" type="submit" [disabled]='!reportForm.valid'>View Report</button>
+    </div>
+  </form>
+</div>

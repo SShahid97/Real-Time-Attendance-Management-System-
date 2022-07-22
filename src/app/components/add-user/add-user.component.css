@@ -1,0 +1,31 @@
+fieldset.subjects{
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px blue;
+            box-shadow:  2px 2px 0px 0px gray;
+}
+
+legend.subjects{
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width:auto;
+        padding:0 8px;
+        border-bottom:none;
+}
+
+
+
+ .loader{
+     width: 70px;
+     border-radius: 50%;
+     height: 70px;
+     border: 8px solid rgb(157, 153, 153);
+     border-top: 8px solid blue;
+
+ }
+
+ .text-danger{
+     color: red;
+ }

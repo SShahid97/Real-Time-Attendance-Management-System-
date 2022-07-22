@@ -1,0 +1,109 @@
+<div class="container">
+  <br>
+  <div class='alert alert-success' *ngIf="showExtras">
+    <strong>Take attendance of any choosen subject on any specific date. </strong>
+    <p>Use below selectors to choose a subject and a date for which you want to take attendance.</p>
+  </div>
+
+  <div class="row" *ngIf="showExtras">
+    <!-- Calender -->
+    <div class="col-sm-3" style="margin-top:5px;" >
+      <input type='date' class="form-control" [min]="minDate" [max]="maxDate" style='color:darkgreen;'
+        [(ngModel)]='attendanceDate' (change)="onDateChange($event.target.value)" onkeydown="return false">
+    </div>
+
+    <!-- Subjects -->
+    <div class="col-sm-4" style="margin-top:5px;" *ngIf="showExtras">
+      <select class="form-control" (change)="onSubjectChange($event.target.value)">
+        <option value="">Select Subject</option>
+        <option *ngFor="let subject of currentUser.subjects" value={{subject.key}}>
+          {{subject.subjectTitle}} ({{subject.semester | capitalizeFirst}})
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row" style="padding-top: 20px;">
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-4">
+      <div class="loader" *ngIf="loading"></div>
+    </div>
+    <div class="col-sm-4"></div>
+  </div>
+
+  <div class='row headings' *ngIf="!loading" style="margin:0px; margin-bottom:5px;" >
+      <h4 *ngIf="students && students.length > 0">
+          <div class="col-sm-5 sub" style="padding-left:0px;">
+                  <span style='font-style:italic;'>  Subject:</span> <strong id="subjectlabel">{{headingLabelSubject}} </strong>
+          </div>
+      <div class="col-sm-4" style="padding-left:0px;">
+             <span style='font-style:italic;'>Semester:</span> <strong>{{headingLabelSemester}}</strong>
+      </div>
+          <div class="col-sm-3" style="padding-left:0px;">    
+                  <span style='font-style:italic;'> Date:</span> <strong> {{headingLabelDate}}</strong>
+          </div>
+          
+      </h4>
+  </div>
+
+
+  <div class="table-responsive tableBorder" *ngIf="students && students.length > 0" >
+    <table class="table table-stripped" id="stdtable" *ngIf="!loading">
+      <thead style=" font-size:16px;">
+        <tr >
+          <th>
+            #
+          </th>
+          <th>
+            Student Name
+          </th>
+          <th>
+            Roll Number
+          </th>
+          <th *ngIf="!disableSave || isAttendanceUpdate">
+            Attendance
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of students; let i = index">
+          <!-- {{subject | json}} -->
+          <td>
+            {{ (i+1) }}
+          </td>
+          <td>
+            {{student.name}}
+            <input type="hidden" value="{{student.name}}">
+          </td>
+
+          <td>
+            {{student.rollNo}}
+            <input type="hidden" value="{{student.rollNo}}">
+          </td>
+          <td *ngIf="!disableSave || isAttendanceUpdate">
+            <input type="radio" class='present-radio' (click)="setradio('Present')" [value]='true' [(ngModel)]='attendanceArray[i].present'
+              [checked]='attendanceArray[i].present' name="{{student.key}}" /> Present
+            <input type="radio" (click)="setradio('Absent')" [value]='false' [(ngModel)]='attendanceArray[i].present' 
+            [checked]='!attendanceArray[i].present' name="{{student.key}}"
+            /> Absent
+          </td>
+
+
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="form-group" style="text-align:right;">
+        <button class="btn btn-success" [disabled]='disableSave && !isAttendanceUpdate' (click)=saveAttendance()>
+          <i class="fa fa-save"></i>&nbsp;{{buttonLabel}}</button>
+        <button class="btn btn-success" *ngIf="disableSave && !isAttendanceUpdate" (click)=editAttendance()>
+            <i class="fa fa-pencil"></i>&nbsp;Edit Attendance</button>
+        
+        <button class="btn btn-danger" *ngIf="isAttendanceUpdate && showCancel"  (click)=goBack()><i class="fa fa-close" ></i>&nbsp;Cancel</button>
+
+        <p class='alert alert-success'  style="margin-top:5px; text-align:left;" *ngIf="disableSave && showExtras">Attendance on {{attendanceDateString}} is taken.</p>
+      </div>
+  </div>
+
+</div>

@@ -1,0 +1,57 @@
+<div class="container">
+  <h2 style="padding-left:0px; padding-bottom:30px; font-family:Comic Sans MS" class="headingLine">Enter Subject Details</h2>
+  <form [formGroup]="subjectForm" (ngSubmit)="addSubject()">
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label class="required">Subject Code:</label>
+      </div>
+      <div class="col-sm-5">
+        <input type="text" id="subjectCode" class="form-control" formControlName="subjectCode">
+        <div *ngIf="!!subjectCode.touched && !!subjectCode.errors">
+          <div class="alert alert-danger" *ngIf="!!subjectCode.errors.required">
+            Subject Code is required
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-2">
+        <label class="required">Subject Title:</label>
+      </div>
+      <div class="col-sm-5">
+        <input type="text" id="subjectTitle" class="form-control" formControlName="subjectTitle">
+        <div *ngIf="!!subjectTitle.touched && !!subjectTitle.errors">
+          <div class="alert alert-danger" *ngIf="!!subjectTitle.errors.required">
+            Subject Title is required
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-sm-2">
+        <label class="required">Semester:</label>
+      </div>
+      <div class="col col-sm-5 form-group">
+        <select id="semester" class="form-control" formControlName="semester">
+          <option *ngFor="let semester of semesters; let i=index;" value={{semester.val}}>
+            {{semester.label}}
+          </option>
+        </select>
+        <div *ngIf="!!semester.touched && !!semester.errors">
+          <div class="alert alert-danger" *ngIf="!!semester.errors.required">
+            Semseter is required
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-7 form-group" style="text-align:right; padding-right:-10px;">
+      <button class="btn btn-danger" (click)=goBack()><i class="fa fa-close" ></i>&nbsp;Cancel</button>  
+      <button class="btn btn-success" type="submit" [disabled]="!subjectForm.valid"><i class="fa fa-save" ></i>&nbsp;Save</button>
+    </div>
+  </form>
+
+</div>

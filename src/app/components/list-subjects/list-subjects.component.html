@@ -1,0 +1,76 @@
+
+<div class="container">
+  <br>
+  <!-- <h2 style="padding-bottom:30px; font-family:Comic Sans MS;">Select any Semester</h2> -->
+
+    <div class="row">
+      <div class="col col-sm-2" style="font-size: 13pt; padding-top:2px;">
+        <label class="">Select Semester: &nbsp;</label>
+      </div>
+      <div class="col col-sm-5 form-group">
+        <select id="semester" class="form-control" (change)="listSubjects($event.target.value)">
+          <option *ngFor="let semester of semesters" value={{semester.val}}>
+            {{semester.label}}
+          </option>
+        </select>
+      </div>
+      
+    </div>
+ 
+
+
+  <div class="row" style="padding-top: 20px;">
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-4">
+      <div class="loader" *ngIf="loading"></div>
+    </div>
+    <div class="col-sm-4"></div>
+  </div>
+
+<div class="table-responsive tableBorder">
+  <table  class="table table-stripped" *ngIf="!loading" >
+    <thead style=" font-size:16px;">
+      <tr *ngIf="subjects && subjects.length > 0"  >  
+        <th>
+         #
+        </th>
+        <th>
+          Subject Code
+        </th>
+        <th>
+          Subject Title
+        </th>
+        <th>
+          Edit
+        </th>
+        <th>
+          Delete
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let subject of subjects; let sn = index">
+       
+        <td>
+          {{ (sn+1) }}
+        </td>
+
+        <td>
+          {{subject.subjectCode}}
+        </td>
+
+        <td>
+          {{subject.subjectTitle}}
+        </td>
+        <td>
+           <button  class="btn" (click)=editSubject(subject.key) title='Edit Subject'><i class='fa fa-edit fa-lg' style='color:blue;'></i></button>
+        </td>
+        <td>
+          <button  class="btn"  (click)=deleteSubject(subject.key) title='Delete Subject'><i class='fa fa-trash fa-lg' style='color:red;'></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>

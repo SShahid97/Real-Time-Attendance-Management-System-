@@ -1,0 +1,155 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+ <!-- Top header nav -->
+  <div class="container">
+    <!-- <button type="button" data-toggle="modal" data-target="#sidebar-left" class="btn btn-primary navbar-btn pull-left">Left Sidebar</button> -->
+
+    <div class="row" style="margin:0px;">
+      <div class="col-sm-12">
+        <button style="margin-top:3px; margin-bottom:4px;" class="btn btn-primary" data-toggle="modal" data-target="#sidebar-left">
+          <i class="fa fa-bars fa-2x" aria-hidden="true"></i>
+        </button>
+
+        <span id="headerlabel">
+          Attendance Management System
+        </span>
+
+        <span class="searchBox pull-right" style="display:inline-block;">
+          <input id="myInput" type="text" placeholder="Search..">
+        </span>
+      </div>
+    </div>
+  </div>
+
+</nav>
+
+<!-- Sidebar Left -->
+<div class="modal fade left" id="sidebar-left" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="padding:12px;">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div style="margin-left:60px;">
+            <strong  style="color:rgb(44, 44, 181); font-size:20px;"><i class="fa fa-user-circle fa-lg"></i>&nbsp;{{currentUserName}}</strong>
+            <div>
+            <ul class="list-unstyled">
+              <li  data-dismiss="modal">
+                <a href="#" [routerLink]="['/myprofile/change-password']" style="color:rgb(249, 249, 249);">
+                  <i class="fa fa-lock"></i> <small >Change Password</small>
+                </a>
+              </li>
+            </ul>              
+             </div>
+          </div>
+
+
+        <!-- <h4 class="modal-title">Easy Attendance</h4> -->
+      </div>
+      <div class="modal-body">
+
+        <nav id="sidebar">
+          <ul class="list-unstyled components"  >
+            <li [routerLinkActive]="['active']"  >
+              <a href="#homeSubmenu" id="attendancNav" data-toggle="collapse" aria-expanded="false">
+                <i class="glyphicon glyphicon-home"></i>
+                Attendance
+              </a>
+              <ul class="collapse list-unstyled" id="homeSubmenu">
+                <li [routerLinkActive]="['active']" data-dismiss="modal">
+                  <a href="#" [routerLink]="['/attendance/take-attendance']">
+                    <i class="fa fa-file"></i> &nbsp; Take</a>
+                </li>
+                <li [routerLinkActive]="['active']" data-dismiss="modal">
+                  <a href="#" [routerLink]="['/attendance/view-attendance']">
+                    <i class="fa fa-list-alt"></i> &nbsp; View</a>
+                </li>
+                <!-- <li [routerLinkActive]="['active']" data-dismiss="modal">
+                    <a href="#" [routerLink]="['/attendance/view-attendance-report']">
+                      <i class="fa fa-list-alt"></i> &nbsp; View Report</a>
+                  </li> -->
+              </ul>
+            </li>
+
+            <li class="outerli" [routerLinkActive]="['active']" *ngIf="adminLoggedIn === true">
+              <a href="#stdSubmenu" id="studentsNav" class="outer-a" data-toggle="collapse" aria-expanded="false">
+                <i class="fa fa-user"></i>
+                Student
+              </a>
+              <ul class="collapse list-unstyled" id="stdSubmenu">
+                <li class="" [routerLinkActive]="['active']" data-dismiss="modal">
+                  <a href="#" class="inner-a" [routerLink]="['/students/view-students']">
+                    <i class="fa fa-list-alt"></i> &nbsp; View</a>
+                </li>
+                <li [routerLinkActive]="['active']" data-dismiss="modal">
+                  <a href="#" class="inner-a" [routerLink]="['/students/add-student']">
+                    <i class="fa fa-plus-circle"></i> &nbsp; Add</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="" [routerLinkActive]="['active']" *ngIf="adminLoggedIn === true">
+              <a href="#subjectSubmenu" id="subjectsNav" data-toggle="collapse" aria-expanded="false">
+                <i class="fa fa-book"></i>
+                Subject
+              </a>
+              <ul class="collapse list-unstyled" id="subjectSubmenu">
+                <li class="" [routerLinkActive]="['active']" data-dismiss="modal" id="view">
+                  <a href="#" [routerLink]="['/subjects/view-subjects']">
+                    <i class="fa fa-list-alt"></i> &nbsp; View</a>
+                </li>
+                <li [routerLinkActive]="['active']" data-dismiss="modal" id="add">
+                  <a href="#" [routerLink]="['/subjects/add-subject']">
+                    <i class="fa fa-plus-circle"></i> &nbsp; Add</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="" [routerLinkActive]="['active']" *ngIf="adminLoggedIn === true">
+                <a href="#teacherSubmenu" id="usersNav" data-toggle="collapse" aria-expanded="false">
+  
+                  <i class="fa fa-user"></i>
+                  User
+                </a>
+                <ul class="collapse list-unstyled" id="teacherSubmenu">
+                  <li [routerLinkActive]="['active']" data-dismiss="modal">
+                    <a href="#" [routerLink]="['/users/view-users']">
+                      <i class="fa fa-list-alt"></i> &nbsp; View</a>
+                  </li>
+                  <li [routerLinkActive]="['active']" data-dismiss="modal">
+                    <a href="#" [routerLink]="['/users/add-user']">
+                      <i class="fa fa-plus-circle"></i> &nbsp; Add</a>
+                  </li>
+                </ul>
+              </li>
+
+            <li data-dismiss="modal" id="logout" >
+              <a href='#' (click)='logout()'>
+                <i class="fa fa-sign-out"></i>
+                Logout
+              </a>
+            </li>
+          
+            <!-- <li [routerLinkActive]="['active']" data-dismiss="modal" >
+                <a  style="display:none;" href="#" [routerLink]="['/myprofile/change-password']">
+                  <i class="glyphicon glyphicon-link"></i>
+                  Change Password
+                </a>
+              </li> -->
+          
+          </ul>
+          
+        </nav>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container" id="home">
+
+
+</div>
